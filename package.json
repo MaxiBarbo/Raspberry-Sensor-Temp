@@ -1,0 +1,19 @@
+{
+  "name": "raspberry-sensor-temp",
+  "version": "1.0.0",
+  "description": "Raspberry-sensor-temp",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MaxiBarbo/Raspberry-Sensor-Temp.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MaxiBarbo/Raspberry-Sensor-Temp/issues"
+  },
+  "homepage": "https://github.com/MaxiBarbo/Raspberry-Sensor-Temp#readme"
+}
