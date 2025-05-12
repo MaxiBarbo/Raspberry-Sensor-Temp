@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Sensores de Temperatura</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  
+<div id="fechaHoraActual"></div> <!- Nuevo elemento para la fecha y hora actual -->
+
+<button id="botonTecho">Sensar Techo</button>
+<button id="botonMedio">Sensar Medio</button>
+<button id="botonSuelo">Sensar Suelo</button>
+
+<div id="resultados">
+  <p id="temperaturaTecho" class="lectura-sensor"></p>
+  <p id="temperaturaMedio" class="lectura-sensor"></p>
+  <p id="temperaturaSuelo" class="lectura-sensor"></p>
+  <p id="promedioTemperatura"></p>
+</div>
+
+<button id="botonReiniciar">Reiniciar Lectura</button>
+
+</body>
+<script src="js/lectura.js"></script>
+</html>
