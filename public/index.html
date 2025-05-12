@@ -1,69 +1,84 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 <head>
-    <title>Temperatura Ambiente</title>
-    <style>
-        body {
-            font-family: sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            background-color: #f0f0f0;
-            margin: 0;
-        }
-        .container {
-            background-color: #fff;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-        #temperatura {
-            font-size: 2em;
-            margin-bottom: 10px;
-        }
-        .error {
-            color: red;
-            font-weight: bold;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Sensor de Temperatura</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f3f4f6;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    h1 {
+      color: #111827;
+    }
+
+    .card {
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .temperature {
+      font-size: 2rem;
+      color: #1f2937;
+      margin: 1rem 0;
+    }
+
+    button {
+      background-color: #3b82f6;
+      color: white;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    button:hover {
+      background-color: #2563eb;
+    }
+
+    .error {
+      color: #dc2626;
+      font-size: 0.9rem;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Temperatura Ambiente</h1>
-        <div id="temperatura">Cargando...</div>
-        <div id="error-message" class="error" style="display:none;"></div>
-    </div>
+  <div class="card">
+    <h1>Temperatura del Sensor</h1>
+    <div class="temperature" id="temp">-- °C</div>
+    <button onclick="fetchTemperature()">Leer Temperatura</button>
+    <div class="error" id="error"></div>
+  </div>
 
-    <script>
-        function actualizarTemperatura() {
-            fetch('http://100.93.144.121:5000/')
-                .then(response => response.text())
-                .then(data => {
-                    const tempMatch = data.match(/Temperatura actual \(simulada\): (\d+\.\d+)°C/);
-                    if (tempMatch && tempMatch[1]) {
-                        document.getElementById('temperatura').textContent = tempMatch[1] + ' °C';
-                        document.getElementById('error-message').style.display = 'none';
-                    } else {
-                        document.getElementById('temperatura').textContent = 'Error al obtener la temperatura';
-                        document.getElementById('error-message').textContent = 'Formato de respuesta inesperado.';
-                        document.getElementById('error-message').style.display = 'block';
-                    }
-                })
-                .catch(error => {
-                    console.error('Error al conectar con la API:', error);
-                    document.getElementById('temperatura').textContent = 'Error de conexión';
-                    document.getElementById('error-message').textContent = 'No se pudo conectar con el servidor.';
-                    document.getElementById('error-message').style.display = 'block';
-                });
-        }
+  <script>
+    async function fetchTemperature() {
+      const tempEl = document.getElementById("temp");
+      const errorEl = document.getElementById("error");
+      tempEl.textContent = "-- °C";
+      errorEl.textContent = "";
 
-        // Actualizar la temperatura cada 5 segundos (puedes ajustar este valor)
-        setInterval(actualizarTemperatura, 5000);
-
-        // Cargar la temperatura inicial al cargar la página
-        actualizarTemperatura();
-    </script>
+      try {
+        const res = await fetch("https://corsproxy.io/?http://100.93.144.121:5000/temperature");
+        if (!res.ok) throw new Error("Error HTTP: " + res.status);
+        const data = await res.json();
+        tempEl.textContent = `${data.temperature} °C`;
+      } catch (err) {
+        errorEl.textContent = "No se pudo obtener la temperatura.";
+        console.error(err);
+      }
+    }
+  </script>
 </body>
 </html>
